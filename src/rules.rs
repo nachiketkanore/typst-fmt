@@ -15,6 +15,7 @@ pub(crate) trait Rule: std::fmt::Debug {
 
 pub(crate) fn rules() -> Vec<Box<dyn rules::Rule>> {
     vec![
+       // NoASTSpacing.as_dyn(),
         SpaceAfterColon.as_dyn(),
         TrailingComma.as_dyn(),
         IdentItemFunc.as_dyn(),
@@ -148,6 +149,18 @@ impl Rule for IdentItemFunc {
         } else {
             writer.push(&text);
         }
+    }
+}
+
+#[derive(Debug)]
+pub(crate) struct NoASTSpacing;
+impl Rule for NoASTSpacing {
+    fn accept(&self, syntax_node: &SyntaxNode, context: &Context) -> bool {
+        syntax_node.is::<ast::Space>()
+    }
+
+    fn eat(&self, text: String, context: &Context, writer: &mut Writer) {
+        
     }
 }
 
